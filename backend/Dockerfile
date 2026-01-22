@@ -1,12 +1,19 @@
-FROM python:3.11-slim
+FROM mcr.microsoft.com/playwright/python:v1.41.0-jammy
 
 WORKDIR /app
+
+# Install system dependencies for OCR (pytesseract) and PDF conversion (pdf2image)
+RUN apt-get update && apt-get install -y \
+    tesseract-ocr \
+    poppler-utils \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Playwright browsers and system dependencies
-RUN playwright install --with-deps chromium
+# chromium is usually included in the base image, but installing it explicitly 
+# ensures it's available and registered for the playwright python package.
+RUN playwright install chromium
 
 COPY . .
 
