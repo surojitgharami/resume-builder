@@ -66,9 +66,7 @@ export const NewResumeBuilder: React.FC = () => {
     const checkProfile = async () => {
         try {
             setLoading(true);
-            await getProfile(accessToken, async () => {
-                await refresh();
-            });
+            await getProfile(accessToken, refresh);
             setHasProfile(true);
         } catch (err: any) {
             if (err.message?.includes('404') || err.message?.includes('not found')) {

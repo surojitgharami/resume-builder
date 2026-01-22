@@ -30,6 +30,7 @@ interface UserProfile {
         github?: string;
         website?: string;
     };
+    photo_url?: string;
 }
 
 export const ResumeDetail: React.FC = () => {

@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -44,11 +44,11 @@ export class ErrorBoundary extends Component<Props, State> {
                   />
                 </svg>
               </div>
-              
+
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                 Oops! Something went wrong
               </h2>
-              
+
               <p className="text-gray-600 dark:text-gray-400 mb-6">
                 The application encountered an unexpected error. Please try refreshing the page.
               </p>
@@ -71,7 +71,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 >
                   Refresh Page
                 </button>
-                
+
                 <button
                   onClick={() => window.location.href = '/dashboard'}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"

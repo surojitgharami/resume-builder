@@ -81,9 +81,7 @@ export const ProfileSetup: React.FC = () => {
                 education,
             };
 
-            await createOrUpdateProfile(profileData, accessToken, async () => {
-                await refresh();
-            });
+            await createOrUpdateProfile(profileData, accessToken, refresh);
             showToast('Profile created successfully!', 'success');
             navigate('/resumes/builder');
         } catch (err) {

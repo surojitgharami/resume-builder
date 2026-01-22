@@ -108,7 +108,7 @@ export interface ProfileExistsResponse {
 export const createOrUpdateProfile = async (
     profileData: ProfileCreateRequest,
     accessToken: string | null,
-    refresh: () => Promise<void>
+    refresh: () => Promise<string | null>
 ): Promise<UserProfile> => {
     return apiRequest<UserProfile>(
         '/api/v1/profile',
@@ -126,7 +126,7 @@ export const createOrUpdateProfile = async (
  */
 export const getProfile = async (
     accessToken: string | null,
-    refresh: () => Promise<void>
+    refresh: () => Promise<string | null>
 ): Promise<UserProfile> => {
     return apiRequest<UserProfile>(
         '/api/v1/profile',
@@ -142,7 +142,7 @@ export const getProfile = async (
 export const updateProfile = async (
     updates: Partial<ProfileCreateRequest>,
     accessToken: string | null,
-    refresh: () => Promise<void>
+    refresh: () => Promise<string | null>
 ): Promise<UserProfile> => {
     return apiRequest<UserProfile>(
         '/api/v1/profile',
@@ -160,7 +160,7 @@ export const updateProfile = async (
  */
 export const deleteProfile = async (
     accessToken: string | null,
-    refresh: () => Promise<void>
+    refresh: () => Promise<string | null>
 ): Promise<void> => {
     return apiRequest<void>(
         '/api/v1/profile',
@@ -175,7 +175,7 @@ export const deleteProfile = async (
  */
 export const checkProfileExists = async (
     accessToken: string | null,
-    refresh: () => Promise<void>
+    refresh: () => Promise<string | null>
 ): Promise<ProfileExistsResponse> => {
     return apiRequest<ProfileExistsResponse>(
         '/api/v1/profile/exists',
