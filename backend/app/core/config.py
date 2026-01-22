@@ -32,11 +32,11 @@ class Settings(BaseSettings):
     def parse_cors_origins(cls, v):
         """Parse CORS_ORIGINS from comma-separated string or list."""
         if isinstance(v, str):
-            # Split by comma and strip whitespace AND trailing slashes
-            return [origin.strip().rstrip('/') for origin in v.split(',') if origin.strip()]
+            # Split by comma and strip whitespace, trailing slashes, and quotes
+            return [origin.strip().rstrip('/').strip("'").strip('"') for origin in v.split(',') if origin.strip()]
         elif isinstance(v, list):
              # Ensure list items are also clean
-            return [origin.strip().rstrip('/') for origin in v if isinstance(origin, str) and origin.strip()]
+            return [origin.strip().rstrip('/').strip("'").strip('"') for origin in v if isinstance(origin, str) and origin.strip()]
         return v
     
     # Database - MongoDB Atlas (REQUIRED)

@@ -99,7 +99,7 @@ export async function apiRequest<T>(
   accessToken?: string | null,
   refreshFn?: RefreshFunction
 ): Promise<T> {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+  const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
   const url = `${baseUrl}${endpoint}`;
 
   const headers = new Headers(options?.headers);
@@ -129,7 +129,7 @@ export async function uploadProfilePhoto(
   accessToken?: string | null,
   refreshFn?: RefreshFunction
 ): Promise<{ photo_url: string }> {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+  const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
   const url = `${baseUrl}/api/v1/users/me/photo`;
 
   const formData = new FormData();
