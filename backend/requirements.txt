@@ -1,0 +1,60 @@
+fastapi
+uvicorn[standard]
+motor
+pydantic>=2.0
+pydantic-settings
+pydantic[email]
+python-jose[cryptography]
+passlib[argon2]
+httpx
+tenacity
+python-multipart
+pyjwt
+bleach
+aiofiles
+python-dotenv
+cryptography
+pytest
+pytest-asyncio
+pytest-cov
+redis
+prometheus-client
+email-validator
+
+# S3/Storage
+boto3
+botocore
+
+# OCR
+pytesseract
+pdf2image
+Pillow
+
+# Google Cloud Vision (optional)
+# google-cloud-vision
+
+# Azure Computer Vision (optional)
+# azure-cognitiveservices-vision-computervision
+# msrest
+
+# PDF Generation
+weasyprint
+playwright==1.41.0
+jinja2==3.1.3
+tenacity==8.2.3
+prometheus-client==0.19.0
+
+# Embeddings
+sentence-transformers
+
+# Background Tasks
+celery[redis]
+
+# Document Processing
+python-docx
+
+# Vector Stores (optional, install based on provider)
+# pinecone-client  # For Pinecone
+# qdrant-client    # For Qdrant
+# weaviate-client  # For Weaviate
+# chromadb         # For Chroma

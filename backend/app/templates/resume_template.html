@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume - {{ profile.full_name }}</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Latin+Modern+Roman:ital,wght@0,400;0,700;1,400&display=swap"
+        type="text/css">
+    <style>
+        /* LaTeX \documentclass[9pt,a4paper]{article} */
+        /* \usepackage[top=0.4in, bottom=0.4in, left=0.5in, right=0.5in]{geometry} */
+        @page {
+            size: A4;
+            margin-top: 0.4in;
+            margin-bottom: 0.4in;
+            margin-left: 0.5in;
+            margin-right: 0.5in;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* 9pt font size */
+            font-size: 9pt;
+            font-family: "Latin Modern Roman", "Times New Roman", Times, serif;
+            line-height: 1.2;
+            color: #000;
+            background: white;
+            /* Screen preview container dimensions */
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            /* Padding mimics the print margins for screen viewing */
+            padding: 0.4in 0.5in;
+        }
+
+        /* Header Layout: tabularx X r */
+        .header-table {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 2pt;
+        }
+
+        .header-left {
+            width: 65%;
+        }
+
+        .header-right {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+        }
+
+        /* \LARGE \textbf{NAME} */
+        h1.name {
+            font-size: 17.28pt;
+            /* LaTeX \LARGE is roughly this */
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 2pt;
+        }
+
+        /* \normalsize \textbf{...} */
+        .contact-info {
+            font-size: 9pt;
+            /* Match body font for normalsize */
+        }
+
+        .contact-row {
+            margin-bottom: 2pt;
+        }
+
+        .contact-label {
+            font-weight: bold;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        /* Photo */
+        .photo-box {
+            width: 3cm;
+            height: 3cm;
+            object-fit: cover;
+            /* No border specified in LaTeX, just includegraphics */
+        }
+
+        /* \sectiontitle{...} */
+        .section-title {
+            margin-top: 8pt;
+            /* \vspace{8pt} before */
+            font-size: 10pt;
+            /* \normalsize for section title? LaTeX snippet says \normalsize inside sectiontitle */
+            /* Actually snippet: \noindent{\color{darktext}\textbf{\normalsize #1}} */
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #000;
+            margin-bottom: 0;
+            line-height: 1;
+        }
+
+        .section-line {
+            height: 1px;
+            /* hrule height 1pt */
+            background-color: #000;
+            margin-top: 0pt;
+            /* \\[-8pt] in LaTeX implies overlap or tight fit, usually lines sit right under text */
+            /* Checking snippet: \textbf{...}\\[-8pt] \hrule. This brings the rule UP. 
+               In CSS, border-bottom is easier, but separate div allows explicit control. 
+               Let's set margin-top to a small value or use border-bottom on title. 
+               Actually, \\[-8pt] cancels the line break space. 
+               We simply put the line immediately after. */
+            margin-bottom: 8pt;
+            /* \vspace{8pt} after */
+            display: block;
+        }
+
+        .section-content {
+            text-align: justify;
+        }
+
+        /* Tabular X r layouts */
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0px;
+        }
+
+        .item-left {
+            font-weight: bold;
+        }
+
+        .item-right {
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .item-sub-row {
+            font-style: normal;
+            /* Snippet: Diploma... \textit{...} */
+            margin-bottom: 6pt;
+        }
+
+        .italic-text {
+            font-style: italic;
+        }
+
+        /* \setlist[itemize]: noitemsep, topsep=1pt, itemsep=1pt, leftmargin=18pt, labelsep=4pt */
+        ul {
+            list-style-type: disc;
+            margin-top: 1pt;
+            margin-bottom: 4pt;
+            padding-left: 18pt;
+        }
+
+        li {
+            padding-left: 4pt;
+            margin-bottom: 1pt;
+            line-height: 1.2;
+        }
+
+        /* Specific tweaks for skills */
+        .skill-block {
+            margin-bottom: 4pt;
+        }
+
+        /* Print adjustments */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                /* Margins handled by @page */
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <div class="header-table">
+        <div class="header-left">
+            <!-- \vspace{2pt} -->
+            <div style="height: 2pt;"></div>
+            <h1 class="name">{{ profile.full_name }}</h1>
+
+            <div class="contact-info">
+                {% if profile.contact.email %}
+                <div class="contact-row"><span class="contact-label">Email:</span> <a
+                        href="mailto:{{ profile.contact.email }}">{{ profile.contact.email }}</a></div>
+                {% endif %}
+                {% if profile.contact.phone %}
+                <div class="contact-row"><span class="contact-label">Phone:</span> {{ profile.contact.phone }}</div>
+                {% endif %}
+                {% if profile.contact.linkedin %}
+                <div class="contact-row"><span class="contact-label">LinkedIn:</span> <a
+                        href="{{ profile.contact.linkedin }}">{{ profile.contact.linkedin }}</a></div>
+                {% endif %}
+                {% if profile.contact.github %}
+                <div class="contact-row"><span class="contact-label">GitHub:</span> <a
+                        href="{{ profile.contact.github }}">{{ profile.contact.github }}</a></div>
+                {% endif %}
+                {% if profile.contact.website %}
+                <div class="contact-row"><span class="contact-label">Portfolio:</span> <a
+                        href="{{ profile.contact.website }}">{{ profile.contact.website }}</a></div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="header-right">
+            {% if profile.photo_url %}
+            <img src="{{ profile.photo_url }}" class="photo-box">
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- OBJECTIVE -->
+    {% if profile.summary %}
+    <div class="section-title">OBJECTIVE</div>
+    <div class="section-line"></div>
+    <div class="section-content">
+        {{ profile.summary }}
+    </div>
+    {% endif %}
+
+    <!-- SKILLS -->
+    {% if profile.skills %}
+    <div class="section-title">SKILLS</div>
+    <div class="section-line"></div>
+    <div class="section-content">
+        <div class="skill-block">
+            <span class="contact-label">Technical Skills:</span>
+            <span>
+                <!-- Flatten skills if they are categorized or just a list -->
+                {% if profile.skills is mapping %}
+                <!-- Handle categorized skills from dict -->
+                {% set all_skills = [] %}
+                {% for cat, skill_list in profile.skills.items() %}
+                {% if cat != 'soft_skills' %}
+                {% set _ = all_skills.extend(skill_list) %}
+                {% endif %}
+                {% endfor %}
+                {{ all_skills|join(', ') }}
+                {% else %}
+                <!-- Handle flat list -->
+                {{ profile.skills|join(', ') }}
+                {% endif %}
+            </span>
+        </div>
+        {% if profile.skills is mapping and profile.skills.soft_skills %}
+        <div class="skill-block">
+            <span class="contact-label">Behavioral Skills:</span>
+            <span>{{ profile.skills.soft_skills|join(', ') }}</span>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- EDUCATION -->
+    {% if profile.education %}
+    <div class="section-title">EDUCATION</div>
+    <div class="section-line"></div>
+    <div class="section-content">
+        {% for edu in profile.education %}
+        <div style="margin-bottom: 6pt;">
+            <!-- \begin{tabularx} X r -->
+            <div class="item-row">
+                <div class="item-left">{{ edu.school }}</div>
+                <div class="item-right">{{ edu.start_date }} -- {{ edu.end_date }}</div>
+            </div>
+            <!-- Degree line -->
+            <div class="item-sub-row">
+                {{ edu.degree }}
+                {% if edu.gpa %} <span class="italic-text">(CGPA: {{ edu.gpa }})</span>{% endif %}
+                {% if edu.location %} <span style="float:right;">{{ edu.location }}</span>{% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- EXPERIENCE -->
+    {% if profile.experience %}
+    <div class="section-title">EXPERIENCE</div>
+    <div class="section-line"></div>
+    <div class="section-content">
+        {% for exp in profile.experience %}
+        <div style="margin-bottom: 8pt;">
+            <!-- \begin{tabularx}: Position | Company ... Dates -->
+            <div class="item-row">
+                <div class="item-left">{{ exp.title }} <span style="font-weight: normal;">|</span> {{ exp.company }}
+                </div>
+                <div class="item-right">{{ exp.start_date }} -- {{ exp.end_date or 'Present' }}</div>
+            </div>
+
+            {% if exp.location %}
+            <div style="text-align: right; font-size: 9pt; font-style: italic; margin-top: -2pt; margin-bottom: 2pt;">{{
+                exp.location }}</div>
+            {% endif %}
+
+            {% if exp.bullets %}
+            <ul>
+                {% for bullet in exp.bullets %}
+                <li>{{ bullet }}</li>
+                {% endfor %}
+            </ul>
+            {% elif exp.description %}
+            <!-- Fallback if no bullets -->
+            <div>{{ exp.description }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- PROJECTS -->
+    {% if profile.projects %}
+    <div class="section-title">PROJECTS</div>
+    <div class="section-line"></div>
+    <div class="section-content">
+        {% for proj in profile.projects %}
+        <div style="margin-bottom: 4pt;">
+            <div class="skill-block">
+                <span style="font-weight: bold;">{{ proj.name }}</span>
+                {% if proj.technologies %}
+                <span style="font-weight: normal;"> | </span>
+                <span class="italic-text" style="font-weight: bold;">{{ proj.technologies|join(', ') }}</span>
+                {% endif %}
+            </div>
+            <ul>
+                {% if proj.highlights %}
+                {% for hl in proj.highlights %}
+                <li>{{ hl }}</li>
+                {% endfor %}
+                {% elif proj.description %}
+                <li>{{ proj.description }}</li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- CERTIFICATIONS -->
+    {% if profile.certifications %}
+    <div class="section-title">CERTIFICATIONS</div>
+    <div class="section-line"></div>
+    <div class="section-content">
+        <!-- Tabular style in snippet was empty, assuming list -->
+        <!-- User snippet: \begin{tabular}... : ... -->
+        <!-- We'll just list them clearly -->
+        {% for cert in profile.certifications %}
+        <div class="item-row" style="justify-content: flex-start; margin-bottom: 2pt;">
+            <span style="font-weight: bold; width: 150px;">{{ cert.name }}</span>
+            <span>: {{ cert.issuer }} ({{ cert.date_obtained }})</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ACHIEVEMENTS -->
+    {% if profile.awards %}
+    <div class="section-title">ACHIEVEMENTS</div>
+    <div class="section-line"></div>
+    <div class="section-content">
+        <ul>
+            {% for award in profile.awards %}
+            <li>{{ award }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- OTHER LANGUAGES AND INTERESTS -->
+    <div class="section-title">OTHER LANGUAGES AND INTERESTS</div>
+    <div class="section-line"></div>
+    <div class="section-content">
+        {% if profile.languages %}
+        <div class="skill-block">
+            <span class="contact-label">Languages Known:</span>
+            <span>{{ profile.languages|join(', ') }}</span>
+        </div>
+        {% endif %}
+
+        <!-- Interests are not explicit in Profile model, checking if we can pass them via 'volunteer_work' or just generic -->
+        {% if profile.interests %}
+        <div class="skill-block">
+            <span class="contact-label">Interests:</span>
+            <span>{{ profile.interests|join(', ') }}</span>
+        </div>
+        {% else %}
+        <!-- User asked for consistent format, safe to leave empty or omit if no data, 
+             but typically templates shouldn't hallucinate interests. 
+             However, to match the LaTeX snippet visual exactly, we render the header. 
+             If data is missing, it will clearly show. -->
+        {% endif %}
+    </div>
+
+</body>
+
+</html>
